@@ -1,17 +1,22 @@
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
-// On enregistre le SW en passant un onUpdate
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
 serviceWorkerRegistration.register({
-    onUpdate: registration => {
-      // ici, on force le reload pour que l'utilisateur voit la nouvelle version
-      window.location.reload();
-    }
-  });
-
-
+  onSuccess: registration => {
+    console.log('✅ Contenu mis en cache pour usage offline');
+  },
+  onUpdate: registration => {
+    console.log('🔄 Nouvelle version dispo, reload...');
+    window.location.reload();
+  }
+});
