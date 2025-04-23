@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import axios from "axios";
 // src/App.js
 const API_URL = process.env.REACT_APP_API_URL;
+console.log('🚀 API_URL is:', API_URL);
 Modal.setAppElement("#root");
 
 const vehicles = Array.from({ length: 12 }, (_, i) => `M${(i + 1).toString().padStart(2, '0')}`);
