@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-
+// src/App.js
+const API_URL = process.env.REACT_APP_API_URL;
 Modal.setAppElement("#root");
 
 const vehicles = Array.from({ length: 12 }, (_, i) => `M${(i + 1).toString().padStart(2, '0')}`);
@@ -65,7 +66,7 @@ function App() {
     setPiecesDetachees([]);
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/operations?systeme=${encodeURIComponent(sys)}`);
+      const res = await axios.get(`${API_URL}/api/operations?systeme=${encodeURIComponent(sys)}`);
       setOperations(res.data);
       if (operationInitiale && res.data.includes(operationInitiale)) {
         setOperationChoisie(operationInitiale);
@@ -73,7 +74,7 @@ function App() {
         // Appel API details pour récupérer pièces et outillages
         try {
           const detailsRes = await axios.get(
-            `http://localhost:5000/api/details?systeme=${encodeURIComponent(sys)}&operation=${encodeURIComponent(operationInitiale)}`
+            `${API_URL}/api/details?systeme=${encodeURIComponent(sys)}&operation=${encodeURIComponent(operationInitiale)}`
           );
 
           setPiecesDetachees(detailsRes.data.pieces || []);
@@ -93,7 +94,7 @@ function App() {
   
     try {
       const detailsRes = await axios.get(
-        `http://localhost:5000/api/details?systeme=${encodeURIComponent(systemeChoisi)}&operation=${encodeURIComponent(op)}`
+        `${API_URL}/api/details?systeme=${encodeURIComponent(systemeChoisi)}&operation=${encodeURIComponent(op)}`
       );
   
       setPiecesDetachees(detailsRes.data.pieces || []);
@@ -145,7 +146,7 @@ function App() {
     const fetchDetails = async () => {
       if (systemeChoisi && operationChoisie) {
         try {
-          const res = await axios.get(`http://localhost:5000/api/details?systeme=${encodeURIComponent(systemeChoisi)}&operation=${encodeURIComponent(operationChoisie)}`);
+          const res = await axios.get(`${API_URL}/api/details?systeme=${encodeURIComponent(systemeChoisi)}&operation=${encodeURIComponent(operationChoisie)}`);
           setOutillages(res.data.outillages || []);
           setPiecesDetachees(res.data.pieces || []);
         } catch (err) {
@@ -374,7 +375,7 @@ function App() {
           <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
             <button
               onClick={() => {
-                setPdfUrl(`http://localhost:5000/fichier?systeme=${encodeURIComponent(systemeChoisi)}&operation=${encodeURIComponent(operationChoisie)}&type=protocole`);
+                setPdfUrl(`${API_URL}/fichier?systeme=${encodeURIComponent(systemeChoisi)}&operation=${encodeURIComponent(operationChoisie)}&type=protocole`);
                 setIsTracabilite(false);
                 setAfficherPleinEcran(true);
               }}
@@ -385,7 +386,7 @@ function App() {
 
             <button
               onClick={() => {
-                setPdfUrl(`http://localhost:5000/fichier?systeme=${encodeURIComponent(systemeChoisi)}&operation=${encodeURIComponent(operationChoisie)}&type=tracabilite`);
+                setPdfUrl(`${API_URL}/fichier?systeme=${encodeURIComponent(systemeChoisi)}&operation=${encodeURIComponent(operationChoisie)}&type=tracabilite`);
                 setIsTracabilite(true);
                 setAfficherPleinEcran(true);
               }}
